@@ -1,0 +1,10 @@
+Package: xbmc-cli
+Source: xbmc-cli
+Version: $VERSION
+Architecture: all
+Maintainer: Matt Carter <m@ttcarter.com>
+Depends: perl (>= 5.10.0), libwww-perl
+Section: utils
+Priority: optional
+Homepage: https://github.com/hash-bang/XBMC-CLI
+Description: Command line interface for a remote XBMC media center
