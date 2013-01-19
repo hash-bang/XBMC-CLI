@@ -16,28 +16,28 @@ Command line reference
 ======================
 ```
 NAME
-    xbmc - Simple script to control a remote XBMC instance
+    xbmc-cli - Simple script to control a remote XBMC instance
 
 SYNOPSIS
-            xbmc pause
-            xbmc volup
-            xbmc voldown
+            xbmc-cli pause
+            xbmc-cli volup
+            xbmc-cli voldown
 
 DESCRIPTION
     A command line tool for the manipulation of remote XBMC instances.
 
     Original API docs - http://wiki.xbmc.org/index.php?title=HTTP_API
 
-EXAMPLES
-    xbmc pause
+COMMANDS
+    xbmc-cli pause
         Send the play / pause command to the remote XBMC instance. If the
         media is playing - it will pause, if its not playing - it will
         unpause.
 
-    xbmc voldown
+    xbmc-cli voldown
         Turn the volume down.
 
-    xbmc volup
+    xbmc-cli volup
         Turn the volume up.
 
 BUGS
