@@ -2,13 +2,13 @@
 # POD {{{
 =head1 NAME
 
-xbmc - Simple script to control a remote XBMC instance
+xbmc-cli - Simple script to control a remote XBMC instance
 
 =head1 SYNOPSIS
 
-	xbmc pause
-	xbmc volup
-	xbmc voldown
+	xbmc-cli pause
+	xbmc-cli volup
+	xbmc-cli voldown
 
 =head1 DESCRIPTION
 
@@ -16,19 +16,19 @@ A command line tool for the manipulation of remote XBMC instances.
 
 Original API docs - http://wiki.xbmc.org/index.php?title=HTTP_API
 
-=head1 EXAMPLES
+=head1 COMMANDS
 
 =over
 
-=item B<xbmc pause>
+=item B<xbmc-cli pause>
 
 Send the play / pause command to the remote XBMC instance. If the media is playing - it will pause, if its not playing - it will unpause.
 
-=item B<xbmc voldown>
+=item B<xbmc-cli voldown>
 
 Turn the volume down.
 
-=item B<xbmc volup>
+=item B<xbmc-cli volup>
 
 Turn the volume up.
 

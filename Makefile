@@ -1,4 +1,4 @@
-SCRIPT := xbmc
+SCRIPT := xbmc-cli
 VERSION := $(shell perl -MExtUtils::MakeMaker -le 'print MM->parse_version(shift)' $(SCRIPT))
 
 # Which directory path to use when creating the deb file
