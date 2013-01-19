@@ -1,0 +1,71 @@
+#!/usr/bin/perl
+# POD {{{
+=head1 NAME
+
+xbmc - Simple script to control a remote XBMC instance
+
+=head1 SYNOPSIS
+
+	xbmc pause
+	xbmc volup
+	xbmc voldown
+
+=head1 DESCRIPTION
+
+A command line tool for the manipulation of remote XBMC instances.
+
+Original API docs - http://wiki.xbmc.org/index.php?title=HTTP_API
+
+=head1 EXAMPLES
+
+=over
+
+=item B<xbmc pause>
+
+Send the play / pause command to the remote XBMC instance. If the media is playing - it will pause, if its not playing - it will unpause.
+
+=item B<xbmc voldown>
+
+Turn the volume down.
+
+=item B<xbmc volup>
+
+Turn the volume up.
+
+=head1 BUGS
+
+Quite probably.
+
+Please report to the author when found.
+
+=head1 AUTHOR
+
+Matt Carter <m@ttcarter.com>
+
+=cut
+# }}} POD
+# Functions {{{
+sub fatal {
+	# Print an error message and fatally die
+	print STDERR @_, "\n";
+	exit 1;
+}
+# }}}
+
+use LWP::Simple qw/get/;
+
+$server = "xbmc:32800"; # Change this to the hostname and port of your XBMC box
+$volstep = 10;
+
+$_ = lc pop;
+
+if (my($direction) = (/vol(up|down)/)) {
+	my $volume = get("http://$server/xbmcCmds/xbmcHttp?command=GetVolume");
+	fatal "Cant get current volume" unless (($volume) = ($volume =~ m/<li>([0-9]+)/g));
+	$volume += ($direction eq 'up') ? $volstep : 0 - $volstep;
+	get("http://$server/xbmcCmds/xbmcHttp?command=SetVolume($volume)");
+} elsif (/pause/) {  # Passthough commands
+	$_ = ucfirst;
+	get("http://$server/xbmcCmds/xbmcHttp?command=$_");
+}
+exit 0;
