@@ -4,7 +4,7 @@ Command line interface for a remote XBMC media center.
 
 This script is intended to take a simple command and relay it to a XBMC instance listening to the usual HTTP command port.
 
-Its especially useful when bound to a keyboard macro which will allow you to use shortcuts on `Machine A` to control XBMC installed on `Machine B`. Since its distrobution is a minimal Perl script it can be deployed to any compatible platform as a control method.
+Its especially useful when bound to a keyboard macro which will allow you to use shortcuts on `Machine A` to control XBMC installed on `Machine B`. Since its distribution is a minimal Perl script it can be deployed to any compatible platform as a control method.
 
 
 Usage
