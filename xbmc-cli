@@ -43,9 +43,6 @@ Turn the volume up.
 
 	$HOME/.xbmc-cli.ini
 
-
-=head1 COMMANDS
-
 =over
 
 =item B<$HOME/.xbmc-cli.ini>
