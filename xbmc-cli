@@ -9,6 +9,7 @@ xbmc-cli - Simple script to control a remote XBMC instance
 	xbmc-cli pause
 	xbmc-cli volup
 	xbmc-cli voldown
+	xbmc-cli debug
 
 =head1 DESCRIPTION
 
@@ -19,6 +20,10 @@ Original API docs - http://wiki.xbmc.org/index.php?title=HTTP_API
 =head1 COMMANDS
 
 =over
+
+=item B<xbmc-cli debug>
+
+Show information about what server would be used and various program options.
 
 =item B<xbmc-cli pause>
 
@@ -55,22 +60,34 @@ sub fatal {
 # }}}
 # Header {{{
 package xbmccli;
+use feature say;
 our $VERSION = '0.1.0';
 use LWP::Simple qw/get/;
+use  Config::INI::Reader;
 # }}}
 
-$server = "xbmc:32800"; # Change this to the hostname and port of your XBMC box
-$volstep = 10;
+# Config reader {{{
+my $server;
+my $port;
+my $volstep = 10;
+my $options = Config::INI::Reader->read_file("$ENV{HOME}/.xbmc-cli.ini");
+$server = $options->{server}->{hostname} or fatal('No server specified in .xbmc-cli.ini');
+$port = $options->{server}->{port} or fatal('No port specified in .xbmc-cli.ini');
+$volstep = $options->{options}->{volstep} if $options->{options}->{volstep};
+# }}}
 
 $_ = lc pop;
 
-if (my($direction) = (/vol(up|down)/)) {
-	my $volume = get("http://$server/xbmcCmds/xbmcHttp?command=GetVolume");
-	fatal "Cant get current volume" unless (($volume) = ($volume =~ m/<li>([0-9]+)/g));
+if (/debug/) {
+	say "Using server: http://$server:$port";
+	say "Volstep: $volstep";
+} elsif (my($direction) = (/vol(up|down)/)) {
+	my $volume = get("http://$server:$port/xbmcCmds/xbmcHttp?command=GetVolume");
+	fatal("Cant get current volume") unless (($volume) = ($volume =~ m/<li>([0-9]+)/g));
 	$volume += ($direction eq 'up') ? $volstep : 0 - $volstep;
-	get("http://$server/xbmcCmds/xbmcHttp?command=SetVolume($volume)");
+	get("http://$server:$port/xbmcCmds/xbmcHttp?command=SetVolume($volume)");
 } elsif (/pause/) {  # Passthough commands
 	$_ = ucfirst;
-	get("http://$server/xbmcCmds/xbmcHttp?command=$_");
+	get("http://$server:$port/xbmcCmds/xbmcHttp?command=$_");
 }
 exit 0;

@@ -1,0 +1,6 @@
+[server]
+host = myxbmc
+port = 32800
+
+[options]
+volstep = 10

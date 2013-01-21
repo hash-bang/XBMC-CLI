@@ -3,7 +3,7 @@ Source: xbmc-cli
 Version: $VERSION
 Architecture: all
 Maintainer: Matt Carter <m@ttcarter.com>
-Depends: perl (>= 5.10.0), libwww-perl
+Depends: perl (>= 5.10.0), libwww-perl, libconfig-ini-perl
 Section: utils
 Priority: optional
 Homepage: https://github.com/hash-bang/XBMC-CLI
