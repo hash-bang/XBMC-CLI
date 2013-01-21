@@ -50,7 +50,6 @@ COMMANDS
 FILES
             $HOME/.xbmc-cli.ini
 
-COMMANDS
     $HOME/.xbmc-cli.ini
         The default config file used by xbmc-cli to specify the remote XBMC
         server.
