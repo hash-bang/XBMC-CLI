@@ -24,6 +24,7 @@ SYNOPSIS
             xbmc-cli pause
             xbmc-cli volup
             xbmc-cli voldown
+            xbmc-cli debug
 
 DESCRIPTION
     A command line tool for the manipulation of remote XBMC instances.
@@ -31,6 +32,10 @@ DESCRIPTION
     Original API docs - http://wiki.xbmc.org/index.php?title=HTTP_API
 
 COMMANDS
+    xbmc-cli debug
+        Show information about what server would be used and various program
+        options.
+
     xbmc-cli pause
         Send the play / pause command to the remote XBMC instance. If the
         media is playing - it will pause, if its not playing - it will
@@ -41,6 +46,16 @@ COMMANDS
 
     xbmc-cli volup
         Turn the volume up.
+
+FILES
+            $HOME/.xbmc-cli.ini
+
+COMMANDS
+    $HOME/.xbmc-cli.ini
+        The default config file used by xbmc-cli to specify the remote XBMC
+        server.
+
+        An example ini file can be found in the docs folder.
 
 BUGS
     Quite probably.
