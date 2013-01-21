@@ -39,6 +39,23 @@ Turn the volume up.
 
 =back
 
+=head1 FILES
+
+	$HOME/.xbmc-cli.ini
+
+
+=head1 COMMANDS
+
+=over
+
+=item B<$HOME/.xbmc-cli.ini>
+
+The default config file used by xbmc-cli to specify the remote XBMC server.
+
+An example ini file can be found in the docs folder.
+
+=back
+
 =head1 BUGS
 
 Quite probably.
