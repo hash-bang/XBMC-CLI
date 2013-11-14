@@ -65,24 +65,34 @@ Matt Carter <m@ttcarter.com>
 
 =cut
 # }}} POD
+# Header {{{
+package xbmccli;
+use feature say;
+our $VERSION = '0.1.0';
+use JSON qw/decode_json/;
+use LWP::Simple qw/get/;
+use URI::Encode qw/uri_encode/;
+use  Config::INI::Reader;
+# }}}
+use Data::Dumper;
 # Functions {{{
 sub fatal {
 	# Print an error message and fatally die
 	print STDERR @_, "\n";
 	exit 1;
 }
-# }}}
-# Header {{{
-package xbmccli;
-use feature say;
-our $VERSION = '0.1.0';
-use LWP::Simple qw/get/;
-use  Config::INI::Reader;
+
+sub getPlayerId {
+	our $server, $port;
+	my $json = get("http://$server:$port/jsonrpc?request=" . '{"jsonrpc":"2.0","id":1,"method":"Player.GetActivePlayers"}');
+	$json = decode_json($json) if $json;
+	return $json->{result}->[0]->{playerid} ? $json->{result}->[0]->{playerid} : 0;
+}
 # }}}
 
 # Config reader {{{
-my $server;
-my $port;
+our $server;
+our $port;
 my $volstep = 10;
 my $options = Config::INI::Reader->read_file("$ENV{HOME}/.xbmc-cli.ini");
 $server = $options->{server}->{hostname} or fatal('No server specified in .xbmc-cli.ini');
@@ -96,12 +106,24 @@ if (/debug/) {
 	say "Using server: http://$server:$port";
 	say "Volstep: $volstep";
 } elsif (my($direction) = (/vol(up|down)/)) {
-	my $volume = get("http://$server:$port/xbmcCmds/xbmcHttp?command=GetVolume");
-	fatal("Cant get current volume") unless (($volume) = ($volume =~ m/<li>([0-9]+)/g));
-	$volume += ($direction eq 'up') ? $volstep : 0 - $volstep;
-	get("http://$server:$port/xbmcCmds/xbmcHttp?command=SetVolume($volume)");
-} elsif (/pause/) {  # Passthough commands
-	$_ = ucfirst;
-	get("http://$server:$port/xbmcCmds/xbmcHttp?command=$_");
+	my $json = get("http://$server:$port/jsonrpc?request=" . '{"jsonrpc":"2.0","method":"Application.GetProperties","params":{"properties":["volume"]},"id":1}');
+	$json = decode_json($json);
+	my $volume = $json->{result}->{volume};
+	say "Volume [$volume]";
+	fatal("Cant get current volume") unless (($volume) = ($volume =~ /^([0-9]+)$/));
+	if ($direction eq 'up') {
+		$volume += $volstep;
+		$volume = 100 if $volume > 100;
+	} elsif ($direction eq 'down') {
+		$volume -= $volstep;
+		$volume = 0 if $volume < 0;
+	}
+	get("http://$server:$port/jsonrpc?request=". '{"jsonrpc":"2.0","id":1,"method":"Application.SetVolume","params":{"volume":' . $volume . '}}');
+} elsif (/play|pause/) {
+	my $id = getPlayerId() or fatal('No active player found');
+	my $url = "http://$server:$port/jsonrpc?request=" . '{"jsonrpc":"2.0","id":1,"method":"Player.PlayPause","params":{"playerid":' . $id . '}}';
+	get($url);
+} else {  # Passthough commands
+	die("Unknown command: $_");
 }
 exit 0;
