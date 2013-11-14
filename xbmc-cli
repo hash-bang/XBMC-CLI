@@ -71,7 +71,6 @@ use feature say;
 our $VERSION = '0.1.0';
 use JSON qw/decode_json/;
 use LWP::Simple qw/get/;
-use URI::Encode qw/uri_encode/;
 use  Config::INI::Reader;
 # }}}
 use Data::Dumper;
