@@ -68,7 +68,7 @@ Matt Carter <m@ttcarter.com>
 # Header {{{
 package xbmccli;
 use feature say;
-our $VERSION = '0.1.0';
+our $VERSION = '0.2.0';
 use JSON qw/decode_json/;
 use LWP::Simple qw/get/;
 use  Config::INI::Reader;
